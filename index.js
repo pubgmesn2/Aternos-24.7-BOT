@@ -4,10 +4,11 @@ const http = require('http');
 const { Server } = require('socket.io');
 const mineflayer = require('mineflayer');
 
-const serverHost = process.env.SERVER_HOST || 'DOOMS_DAY_REBORN.aternos.me';
-const serverPort = parseInt(process.env.SERVER_PORT || '59173', 10);
-const botUsername = process.env.BOT_USERNAME || '247_Monitor';
-const minecraftVersion = process.env.MC_VERSION || false;
+// تعديل البيانات هنا مباشرة لتناسب سيرفرك
+const serverHost = process.env.SERVER_HOST || 'voltmc-85cy.aternos.me';
+const serverPort = parseInt(process.env.SERVER_PORT || '23553', 10);
+const botUsername = process.env.BOT_USERNAME || 'Volt_Helper_247';
+const minecraftVersion = process.env.MC_VERSION || false; // سيقوم بالتعرف التلقائي على إصدار السيرفر
 const reconnectInterval = parseInt(process.env.RECONNECT_INTERVAL_MS || '40000', 10);
 const antiAfkInterval = parseInt(process.env.ANTI_AFK_INTERVAL_MS || '20000', 10);
 const httpPort = parseInt(process.env.PORT || '3000', 10);
@@ -263,5 +264,10 @@ process.on('SIGINT', () => {
 });
 
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught exception:', err);
+  console.error('Uncaught Exception caught:', err.message);
+  scheduleReconnect();
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
